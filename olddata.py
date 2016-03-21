@@ -6,6 +6,7 @@ table = data.sheets()[0]
 col1 = table.col_values(0)
 col2 = table.col_values(1)
 col3 = table.col_values(2)
+col5 = table.col_values(4)
 def get_getup_time():
     getup_time_jan = []
     for i in range(1, 32):
@@ -63,4 +64,13 @@ def get_bedtime():
     bedtime_present = bedtime_jan + bedtime_feb + bedtime_mar
     # print bedtime_present
     return bedtime_present
-# get_bedtime()
+
+def get_mt():
+    mt_list = []
+    for i in range(1,80):
+        mt = int(col5[i])
+        mt_list.append(mt)
+    # print mt_list
+    return mt_list
+
+# get_mt()
