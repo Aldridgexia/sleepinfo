@@ -17,3 +17,4 @@ import pandas as pd
 
 dates = pd.date_range('2016-01-01', periods=365)
 print dates
+print type(dates)
