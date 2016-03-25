@@ -78,5 +78,7 @@ else:
     data_date = datetime.strptime(data_date, format('%Y-%m-%d'))
     print data_date
 
-
-print df_copy.head(100)
+#读入mt time
+mt_time_today = int(raw_input('Please enter mt time: '))
+print mt_time_today
+# print df_copy.head(100)
