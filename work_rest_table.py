@@ -60,11 +60,11 @@ if is_today in ['y', 'Y', 'yes', 'Yes']:
     getup_minute = int(raw_input("Please enter get-up-minute: "))
     getup_time_actual = datetime(today.year, today.month, today.day, getup_hour, getup_minute, 0)
     print getup_time_actual
-    # for i in df_copy.index:
-    #     if df_copy['date'][i] == today:
-    #         # print df_copy.at[i, 'date']
-    #         df_copy.set_value(i, 'getup_time', getup_time_actual)
-    #         # print df_copy.loc[i]
+    for i in df_copy.index:
+        if df_copy['date'][i] == today:
+            # print df_copy.at[i, 'date']
+            df_copy.set_value(i, 'getup_time', getup_time_actual)
+            # print df_copy.loc[i]
 
     bed_hour = int(raw_input("Please enter bed-hour: "))
     bed_minute = int(raw_input("Please enter bed-minute: "))
