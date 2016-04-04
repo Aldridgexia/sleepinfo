@@ -29,7 +29,7 @@ bedtime_series = Series(bedtime_list,name="bedtime")
 
 #第四列 睡眠长度
 sleep_duration_list = []
-for i in range(0, 78):
+for i in range(0, 89):
     sleep_duration = getup_time_list[i+1] - bedtime_list[i]
     sleep_duration_seconds = sleep_duration.seconds
     sleep_duration_hours = sleep_duration_seconds/3600.
@@ -50,7 +50,7 @@ df = concat([date_series, getup_time_series, bedtime_series, sleep_duration_seri
 df_copy = df
 df.index = dates
 # print df.index
-# print df.head(82)
+print df.head(100)
 
 #读入起床时间和入睡时间
 today = date.today()

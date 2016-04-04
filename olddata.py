@@ -23,7 +23,7 @@ def get_getup_time():
         getup_time_feb.append(whole_time)
         # print whole_time
     getup_time_mar = []
-    for i in range(1, 20):
+    for i in range(1, 31):
         hour_float = 24. * (col2[i+60] - col1[i+60])
         hour_int = int(hour_float)
         whole_time = datetime(2016, 3, i, hour_int, 0, 0)
@@ -52,7 +52,7 @@ def get_bedtime():
         bedtime_feb.append(whole_time)
         # print whole_time
     bedtime_mar = []
-    for i in range(60, 80):
+    for i in range(60, 91):
         hour_float = 24. * (col3[i] - col1[i+1])
         hour_int = int(hour_float)
         if hour_int >= 0:
@@ -67,7 +67,7 @@ def get_bedtime():
 
 def get_mt():
     mt_list = []
-    for i in range(1,80):
+    for i in range(1,90):
         mt = int(col5[i])
         mt_list.append(mt)
     # print mt_list
