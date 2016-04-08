@@ -3,7 +3,7 @@ from datetime import *
 from pandas import *
 import olddata
 
-set_option('display.width', 400)
+set_option('display.width', 500)
 
 #第一列 日期
 date_list = []
