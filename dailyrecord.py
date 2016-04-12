@@ -59,6 +59,7 @@ else:
     dayinfo['mt_time'] = mt_time_today
     # print mt_time_today
 
+#每日数据插入数据库
 print dayinfo
 post.insert_one(dayinfo)
 
