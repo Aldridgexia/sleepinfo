@@ -60,6 +60,8 @@ else:
     # print mt_time_today
 
 #每日数据插入数据库
-# print dayinfo
+print dayinfo
+
+
 post.insert_one(dayinfo)
 print('Data Insert successfully!')
