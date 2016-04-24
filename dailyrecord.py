@@ -32,7 +32,7 @@ if is_today in ['y', 'Y', 'yes', 'Yes']:
     #读入mt time
     mt_time_today = int(raw_input('Please enter mt time: '))
     dayinfo['mt_time'] = mt_time_today
-    # print mt_time_today
+    print mt_time_today
 else:
     data_date = str(raw_input("Please enter your data's date: "))
     data_date = datetime.strptime(data_date, format('%Y-%m-%d'))
@@ -57,11 +57,9 @@ else:
     #读入mt time
     mt_time_today = int(raw_input('Please enter mt time: '))
     dayinfo['mt_time'] = mt_time_today
-    # print mt_time_today
+    print mt_time_today
 
 #每日数据插入数据库
 print dayinfo
-
-
 post.insert_one(dayinfo)
 print('Data Insert successfully!')
