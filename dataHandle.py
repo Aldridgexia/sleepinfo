@@ -12,33 +12,28 @@ new_table.columns = ['date','wake_time','bed_time','mt_time']
 new_table['sleep_duration']=new_table['wake_time']-new_table['bed_time'].shift(1)
 new_table.index = new_table['date']
 del new_table['date']
-print new_table.head(10)
-print new_table.tail(10)
-
+# print new_table.tail(7)
 
 mt_time_total = new_table['mt_time'].sum()
-print 'total mt times: '
-print mt_time_total
+print 'total mt times: %d' % (mt_time_total)
 mt_feb = new_table.ix['2016/2']['mt_time'].sum()
-print 'total mt times in February: '
-print mt_feb
+print 'total mt times in February: %d' % (mt_feb)
 mt_mar = new_table.ix['2016/3']['mt_time'].sum()
-print 'total mt times in March: '
-print mt_mar
+print 'total mt times in March: %d' % (mt_mar)
 mt_apr = new_table.ix['2016/4']['mt_time'].sum()
-print 'total mt times in April: '
-print mt_apr
+print 'total mt times in April: %d' % (mt_apr)
+mt_may = new_table.ix['2016/5']['mt_time'].sum()
+print 'total mt times in May: %d' % (mt_may)
 
-sleep_duration_average = new_table['sleep_duration'].mean()
-print 'average sleep duration in all time: '
-print sleep_duration_average
+def hour_minute(td):
+    return (td.seconds//3600, (td.seconds//60)%60)
+sd_avg = new_table['sleep_duration'].mean()
+print 'average sleep duration in all time: %dhrs %dmins' % hour_minute(sd_avg)
 sd_feb = new_table.ix['2016/2']['sleep_duration'].mean()
-print 'average sleep duration in February: '
-print sd_feb
+print 'average sleep duration in February: %dhrs %dmins' % hour_minute(sd_feb)
 sd_mar = new_table.ix['2016/3']['sleep_duration'].mean()
-print 'average sleep duration in March: '
-print sd_mar
+print 'average sleep duration in March: %dhrs %dmins' % hour_minute(sd_mar)
 sd_apr = new_table.ix['2016/4']['sleep_duration'].mean()
-print 'average sleep duration in April: '
-print sd_apr
-
+print 'average sleep duration in April: %dhrs %dmins' % hour_minute(sd_apr)
+sd_may = new_table.ix['2016/5']['sleep_duration'].mean()
+print 'average sleep duration in May: %dhrs %dmins' % hour_minute(sd_may)
