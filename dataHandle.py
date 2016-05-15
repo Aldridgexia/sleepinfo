@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np 
 from pandas import DataFrame, Series
 import xlrd
+pd.set_option('expand_frame_repr', False)
 
 data_path = '/Users/Aldridge/sleepinfo/sleepData.xlsx'
 data_excel = pd.ExcelFile(data_path)
@@ -12,7 +13,9 @@ new_table.columns = ['date','wake_time','bed_time','mt_time']
 new_table['sleep_duration']=new_table['wake_time']-new_table['bed_time'].shift(1)
 new_table.index = new_table['date']
 del new_table['date']
-# print new_table.tail(7)
+print new_table.tail(7)
+t = new_table.ix['2016/5']['wake_time']
+print t, type(t)
 
 mt_time_total = new_table['mt_time'].sum()
 print 'total mt times: %d' % (mt_time_total)
