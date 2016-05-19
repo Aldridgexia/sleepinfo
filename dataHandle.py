@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np 
 from pandas import DataFrame, Series
 import xlrd
+from datetime import datetime, time 
 pd.set_option('expand_frame_repr', False)
 
 #读入数据
@@ -15,6 +16,7 @@ new_table['sleep_duration']=new_table['wake_time']-new_table['bed_time'].shift(1
 new_table.index = new_table['date']
 del new_table['date']
 print new_table.tail(7)
+print('\t')
 # t = new_table.ix['2016/5/1']['wake_time']
 # print t, type(t)
 
@@ -55,3 +57,22 @@ print_sd(new_table)
 for i in range(2,6):
 	print_sd(new_table, i)
 print 'average sleep duration in last one week: %dhrs %dmins' % hour_minute(new_table['sleep_duration'][-7:].mean())
+
+def print_avg_time(timeseries,wake=True):
+	seconds_list = []
+	for t_stamp in timeseries:
+		ts_seconds = t_stamp.hour*3600+t_stamp.minute*60+t_stamp.second*1.
+		seconds_list.append(ts_seconds)
+	timeseries_temp = Series(seconds_list,index = timeseries.index)
+	ts_m = timeseries_temp.mean()
+	ts_m = int(ts_m)
+	result = time(ts_m/3600,(ts_m%3600)/60,(ts_m%3600)%60)
+	if wake == True:
+		print 'average wake time is', result.strftime('%H:%M:%S')
+	else:
+		print 'average bed time is', result.strftime('%H:%M:%S')
+	return result
+print('\t')
+print_avg_time(new_table['wake_time'])
+# 入睡时间还有bug，12点前入睡应为负数
+# print_avg_time(new_table['bed_time'],wake = False)
