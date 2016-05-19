@@ -36,6 +36,7 @@ def print_mt(table,month=0):
 print_mt(new_table)
 for i in range(2,6):
 	print_mt(new_table, i)
+print 'total mt times in last one week: %d' % (new_table['mt_time'][-7:].sum())
 
 def hour_minute(td):
     return (td.seconds//3600, (td.seconds//60)%60)
@@ -53,3 +54,4 @@ def print_sd(table,month=0):
 print_sd(new_table)
 for i in range(2,6):
 	print_sd(new_table, i)
+print 'average sleep duration in last one week: %dhrs %dmins' % hour_minute(new_table['sleep_duration'][-7:].mean())
