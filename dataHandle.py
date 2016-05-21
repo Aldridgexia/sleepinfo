@@ -38,7 +38,8 @@ def print_mt(table,month=0):
 print_mt(new_table)
 for i in range(2,6):
 	print_mt(new_table, i)
-print 'total mt times in last one week: %d' % (new_table['mt_time'][-7:].sum())
+print 'total mt times in last 7 days: %d' % (new_table['mt_time'][-7:].sum())
+print('\t')
 
 def hour_minute(td):
     return (td.seconds//3600, (td.seconds//60)%60)
@@ -56,7 +57,7 @@ def print_sd(table,month=0):
 print_sd(new_table)
 for i in range(2,6):
 	print_sd(new_table, i)
-print 'average sleep duration in last one week: %dhrs %dmins' % hour_minute(new_table['sleep_duration'][-7:].mean())
+print 'average sleep duration in last 7 days: %dhrs %dmins' % hour_minute(new_table['sleep_duration'][-7:].mean())
 
 def print_avg_time(timeseries,wake=True):
 	seconds_list = []
@@ -74,5 +75,6 @@ def print_avg_time(timeseries,wake=True):
 	return result
 print('\t')
 print_avg_time(new_table['wake_time'])
+# print_avg_time(new_table.ix['2016/5']['wake_time'])
 # 入睡时间还有bug，12点前入睡应为负数
 # print_avg_time(new_table['bed_time'],wake = False)
