@@ -75,6 +75,8 @@ def print_avg_time(timeseries,wake=True):
 	return result
 print('\t')
 print_avg_time(new_table['wake_time'])
-# print_avg_time(new_table.ix['2016/5']['wake_time'])
+print_avg_time(new_table.ix['2016/5']['wake_time'])
+print_avg_time(new_table.ix['2016/4']['wake_time'])
+print_avg_time(new_table.ix['2016/3']['wake_time'])
 # 入睡时间还有bug，12点前入睡应为负数
 # print_avg_time(new_table['bed_time'],wake = False)
