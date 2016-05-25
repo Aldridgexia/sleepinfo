@@ -17,8 +17,8 @@ new_table.index = new_table['date']
 del new_table['date']
 print new_table.tail(7)
 print('\t')
-# t = new_table.ix['2016/5/1']['wake_time']
-# print t, type(t)
+t = new_table.ix['2016/5/1']['wake_time']
+print t, type(t)
 
 #处理数据
 month_dict = {1:'January',2:'February',3:'March',4:'April',5:'May',\
