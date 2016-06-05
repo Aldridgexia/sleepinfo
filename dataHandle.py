@@ -15,10 +15,10 @@ new_table.columns = ['date','wake_time','bed_time','mt_time']
 new_table['sleep_duration']=new_table['wake_time']-new_table['bed_time'].shift(1)
 new_table.index = new_table['date']
 del new_table['date']
+print '-'*14 + 'INFO OF LAST 7 DAYS' + '-'*14 + '\n'
 print new_table.tail(7)
 print('\t')
-# t = new_table.ix['2016/5/1']['wake_time']
-# print t, type(t)
+
 
 #处理数据
 month_dict = {1:'January',2:'February',3:'March',4:'April',5:'May',\
@@ -35,8 +35,10 @@ def print_mt(table,month=0):
 		mt_month = table.ix[given_month]['mt_time'].sum()
 		print 'total mt times in %s: %d' % (abrv_month,mt_month)
 
+#mt 信息展示块
+print '-'*20 + 'MT INFO' + '-'*20 + '\n'
 print_mt(new_table)
-for i in range(2,6):
+for i in range(2,7):
 	print_mt(new_table, i)
 print 'total mt times in last 7 days: %d' % (new_table['mt_time'][-7:].sum())
 print('\t')
@@ -54,29 +56,69 @@ def print_sd(table,month=0):
 		sd_month = table.ix[given_month]['sleep_duration'].mean()
 		print 'average sleep duration in %s: %dhrs %dmins' % ((abrv_month,)+hour_minute(sd_month))
 
+#sleep duration 信息展示块
+print '-'*14 + 'SLEEP DURATION INFO' + '-'*14 + '\n'
 print_sd(new_table)
-for i in range(2,6):
+for i in range(2,7):
 	print_sd(new_table, i)
 print 'average sleep duration in last 7 days: %dhrs %dmins' % hour_minute(new_table['sleep_duration'][-7:].mean())
-
-def print_avg_time(timeseries,wake=True):
-	seconds_list = []
-	for t_stamp in timeseries:
-		ts_seconds = t_stamp.hour*3600+t_stamp.minute*60+t_stamp.second*1.
-		seconds_list.append(ts_seconds)
-	timeseries_temp = Series(seconds_list,index = timeseries.index)
-	ts_m = timeseries_temp.mean()
-	ts_m = int(ts_m)
-	result = time(ts_m/3600,(ts_m%3600)/60,(ts_m%3600)%60)
-	if wake == True:
-		print 'average wake time is', result.strftime('%H:%M:%S')
-	else:
-		print 'average bed time is', result.strftime('%H:%M:%S')
-	return result
 print('\t')
-print_avg_time(new_table['wake_time'])
-# print_avg_time(new_table.ix['2016/5']['wake_time'])
-# print_avg_time(new_table.ix['2016/4']['wake_time'])
-# print_avg_time(new_table.ix['2016/3']['wake_time'])
-# 入睡时间还有bug，12点前入睡应为负数
-# print_avg_time(new_table['bed_time'],wake = False)
+
+#计算平均起床时间和平均入睡时间的函数
+def print_avg_time(timeseries,month=0, wake=True):
+	seconds_list = []
+	if wake == True:
+		if month == 0:
+			abrv_month = 'all time'
+			timeseries = timeseries['wake_time']
+		else:
+			given_month = '2016/' + str(month)
+			abrv_month = month_dict[month]
+			timeseries = timeseries.ix[given_month]['wake_time']
+		for t_stamp in timeseries:
+			ts_seconds = t_stamp.hour*3600+t_stamp.minute*60+t_stamp.second*1.
+			seconds_list.append(ts_seconds)
+		timeseries_temp = Series(seconds_list,index = timeseries.index)
+		ts_m = timeseries_temp.mean()
+		ts_m = int(ts_m)
+		result = time(ts_m/3600,(ts_m%3600)/60,(ts_m%3600)%60)
+		print 'average wake time in ' + abrv_month + ': ' + result.strftime('%H:%M:%S')
+	else:
+		if month == 0:
+			abrv_month = 'all time'
+			timeseries = timeseries['bed_time']
+		else:
+			given_month = '2016/' + str(month)
+			abrv_month = month_dict[month]
+			timeseries = timeseries.ix[given_month]['bed_time']
+		for t_stamp in timeseries:
+			if t_stamp.hour <= 12:
+				ts_seconds = t_stamp.hour*3600+t_stamp.minute*60+t_stamp.second*1.
+				seconds_list.append(ts_seconds)
+			else:
+				ts_seconds = t_stamp.hour*3600+t_stamp.minute*60+t_stamp.second*1. - 24*3600
+				seconds_list.append(ts_seconds)				
+		timeseries_temp = Series(seconds_list,index = timeseries.index)
+		ts_m = timeseries_temp.mean()
+		if ts_m > 0:
+			ts_m = int(ts_m)
+		else:
+			ts_m = int(ts_m) + 24*3600
+		result = time(ts_m/3600,(ts_m%3600)/60,(ts_m%3600)%60)
+		print 'average bed time in %s is %s' % (abrv_month, result.strftime('%H:%M:%S'))	
+	return result
+
+#平均睡眠信息展示块
+print '-'*13 + 'AVERAGE WAKE TIME INFO' + '-'*13 + '\n'
+print_avg_time(new_table)
+for i in range(2,7):
+	print_avg_time(new_table, i)
+print('\t')
+print '-'*14 + 'AVERAGE BED TIME INFO' + '-'*14 + '\n'
+print_avg_time(new_table, wake=False)
+for i in range(2,7):
+	print_avg_time(new_table, i, wake=False)
+
+
+
+
