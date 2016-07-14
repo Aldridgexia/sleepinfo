@@ -38,7 +38,7 @@ def print_mt(table,month=0):
 #mt 信息展示块
 print '-'*20 + 'MT INFO' + '-'*20 + '\n'
 print_mt(new_table)
-for i in range(2,7):
+for i in range(2,8):
 	print_mt(new_table, i)
 print 'total mt times in last 7 days: %d' % (new_table['mt_time'][-7:].sum())
 print('\t')
@@ -59,7 +59,7 @@ def print_sd(table,month=0):
 #sleep duration 信息展示块
 print '-'*14 + 'SLEEP DURATION INFO' + '-'*14 + '\n'
 print_sd(new_table)
-for i in range(2,7):
+for i in range(2,8):
 	print_sd(new_table, i)
 print 'average sleep duration in last 7 days: %dhrs %dmins' % hour_minute(new_table['sleep_duration'][-7:].mean())
 print('\t')
@@ -111,12 +111,12 @@ def print_avg_time(timeseries,month=0, wake=True):
 #平均睡眠信息展示块
 print '-'*13 + 'AVERAGE WAKE TIME INFO' + '-'*13 + '\n'
 print_avg_time(new_table)
-for i in range(2,7):
+for i in range(2,8):
 	print_avg_time(new_table, i)
 print('\t')
 print '-'*14 + 'AVERAGE BED TIME INFO' + '-'*14 + '\n'
 print_avg_time(new_table, wake=False)
-for i in range(2,7):
+for i in range(2,8):
 	print_avg_time(new_table, i, wake=False)
 
 
