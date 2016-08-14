@@ -20,11 +20,15 @@ print new_table.tail(7)
 print('\t')
 
 
-#处理数据
+# 处理数据
+# 月份映射表
 month_dict = {1:'January',2:'February',3:'March',4:'April',5:'May',\
 			  6:'June',7:'July',8:'August',9:'September',10:'October',\
 			  11:'November',12:'December'}
+month_range = np.unique(new_table.index.month)
 
+
+# mt统计
 def print_mt(table,month=0):
 	if month == 0:
 		mt_total = table['mt_time'].sum()
@@ -35,14 +39,8 @@ def print_mt(table,month=0):
 		mt_month = table.ix[given_month]['mt_time'].sum()
 		print 'total mt times in %s: %d' % (abrv_month,mt_month)
 
-#mt 信息展示块
-print '-'*20 + 'MT INFO' + '-'*20 + '\n'
-print_mt(new_table)
-for i in range(2,8):
-	print_mt(new_table, i)
-print 'total mt times in last 7 days: %d' % (new_table['mt_time'][-7:].sum())
-print('\t')
 
+# sleep duration 统计
 def hour_minute(td):
     return (td.seconds//3600, (td.seconds//60)%60)
 
@@ -56,15 +54,8 @@ def print_sd(table,month=0):
 		sd_month = table.ix[given_month]['sleep_duration'].mean()
 		print 'average sleep duration in %s: %dhrs %dmins' % ((abrv_month,)+hour_minute(sd_month))
 
-#sleep duration 信息展示块
-print '-'*14 + 'SLEEP DURATION INFO' + '-'*14 + '\n'
-print_sd(new_table)
-for i in range(2,8):
-	print_sd(new_table, i)
-print 'average sleep duration in last 7 days: %dhrs %dmins' % hour_minute(new_table['sleep_duration'][-7:].mean())
-print('\t')
 
-#计算平均起床时间和平均入睡时间的函数
+# 平均起床时间和平均入睡时间统计
 def print_avg_time(timeseries,month=0, wake=True):
 	seconds_list = []
 	if wake == True:
@@ -108,15 +99,43 @@ def print_avg_time(timeseries,month=0, wake=True):
 		print 'average bed time in %s is %s' % (abrv_month, result.strftime('%H:%M:%S'))	
 	return result
 
+
+# 按月份显示统计信息汇总
+for i in month_range:
+	print '-'*33 + '\n'
+	print_mt(new_table, i)
+	print_sd(new_table, i)
+	print_avg_time(new_table, i)
+	print_avg_time(new_table, i, wake=False)
+
+
+# mt信息展示块
+print '-'*20 + 'MT INFO' + '-'*20 + '\n'
+print_mt(new_table)
+for i in range(2,9):
+	print_mt(new_table, i)
+print 'total mt times in last 7 days: %d' % (new_table['mt_time'][-7:].sum())
+print('\t')
+
+
+# sleep duration 信息展示块
+print '-'*14 + 'SLEEP DURATION INFO' + '-'*14 + '\n'
+print_sd(new_table)
+for i in range(2,9):
+	print_sd(new_table, i)
+print 'average sleep duration in last 7 days: %dhrs %dmins' % hour_minute(new_table['sleep_duration'][-7:].mean())
+print('\t')
+
+
 #平均睡眠信息展示块
 print '-'*13 + 'AVERAGE WAKE TIME INFO' + '-'*13 + '\n'
 print_avg_time(new_table)
-for i in range(2,8):
+for i in range(2,9):
 	print_avg_time(new_table, i)
 print('\t')
 print '-'*14 + 'AVERAGE BED TIME INFO' + '-'*14 + '\n'
 print_avg_time(new_table, wake=False)
-for i in range(2,8):
+for i in range(2,9):
 	print_avg_time(new_table, i, wake=False)
 
 
