@@ -6,7 +6,7 @@ import xlrd
 from datetime import datetime, time 
 pd.set_option('expand_frame_repr', False)
 
-#读入数据
+# 读入数据
 data_path = '/Users/Aldridge/sleepinfo/sleepData.xlsx'
 data_excel = pd.ExcelFile(data_path)
 table = data_excel.parse(u'工作表1')
@@ -22,9 +22,9 @@ print('\t')
 
 # 处理数据
 # 月份映射表
-month_dict = {1:'January',2:'February',3:'March',4:'April',5:'May',\
-			  6:'June',7:'July',8:'August',9:'September',10:'October',\
-			  11:'November',12:'December'}
+month_dict = {1:'January',2:'February',3:'March',4:'April',5:'May',
+			6:'June',7:'July',8:'August',9:'September',10:'October',
+			11:'November',12:'December'}
 month_range = np.unique(new_table.index.month)
 
 
@@ -38,6 +38,15 @@ def print_mt(table,month=0):
 		abrv_month = month_dict[month]
 		mt_month = table.ix[given_month]['mt_time'].sum()
 		print 'total mt times in %s: %d' % (abrv_month,mt_month)
+
+# mt计算
+def calc_mt(table, month=0):
+	if month == 0:
+		mt_total = table['mt_time'].sum()
+		return mt_total
+	else:
+		mt_month = table.ix[given_month]['mt_time'].sum()
+		return mt_month
 
 
 # sleep duration 统计
@@ -54,6 +63,16 @@ def print_sd(table,month=0):
 		sd_month = table.ix[given_month]['sleep_duration'].mean()
 		print 'average sleep duration in %s: %dhrs %dmins' % ((abrv_month,)+hour_minute(sd_month))
 
+# sd计算
+def calc_sd(table, month=0):
+	if month == 0:
+		sd_avg = table['sleep_duration'].mean()
+		return sd_avg
+	else:
+		given_month = '2016/' + str(month)
+		abrv_month = month_dict[month]
+		sd_month = table.ix[given_month]['sleep_duration'].mean()
+		return sd_month
 
 # 平均起床时间和平均入睡时间统计
 def print_avg_time(timeseries,month=0, wake=True):
@@ -102,7 +121,7 @@ def print_avg_time(timeseries,month=0, wake=True):
 
 
 # mt信息展示块
-print '-'*20 + 'MT INFO' + '-'*20 + '\n'
+print('-'*20 + 'MT INFO' + '-'*20 + '\n')
 print_mt(new_table)
 for i in month_range:
 	print_mt(new_table, i)
@@ -111,7 +130,7 @@ print('\t')
 
 
 # sleep duration 信息展示块
-print '-'*14 + 'SLEEP DURATION INFO' + '-'*14 + '\n'
+print('-'*14 + 'SLEEP DURATION INFO' + '-'*14 + '\n')
 print_sd(new_table)
 for i in month_range:
 	print_sd(new_table, i)
@@ -119,22 +138,21 @@ print 'average sleep duration in last 7 days: %dhrs %dmins' % hour_minute(new_ta
 print('\t')
 
 
-#平均睡眠信息展示块
-print '-'*13 + 'AVERAGE WAKE TIME INFO' + '-'*13 + '\n'
-print_avg_time(new_table)
+# 平均睡眠信息展示块
+print('-'*13 + 'AVERAGE WAKE TIME INFO' + '-'*13 + '\n')
 for i in month_range:
 	print_avg_time(new_table, i)
 print('\t')
-print '-'*14 + 'AVERAGE BED TIME INFO' + '-'*14 + '\n'
+print('-'*14 + 'AVERAGE BED TIME INFO' + '-'*14 + '\n')
 print_avg_time(new_table, wake=False)
 for i in month_range:
 	print_avg_time(new_table, i, wake=False)
 
 info_df = DataFrame(columns=['wake_time','bed_time','sleep_duration','mt_time'], index=month_range)
-
+print(info_df)
 # 按月份显示统计信息汇总
 for i in month_range:
-	print '-'*33 + '\n'
+	print('-'*33 + '\n')
 	print_avg_time(new_table, i)
 	print_avg_time(new_table, i, wake=False)
 	print_sd(new_table, i)
