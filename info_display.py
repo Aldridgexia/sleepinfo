@@ -5,7 +5,11 @@ from pandas import DataFrame, Series
 import xlrd
 from datetime import datetime, time 
 pd.set_option('expand_frame_repr', False)
-
+import matplotlib.pyplot as plt 
+import matplotlib.dates as mdates
+import pylab
+from matplotlib.ticker import FuncFormatter as ff
+from matplotlib.ticker import MultipleLocator
 # read data
 data_path = '/Users/Aldridge/sleepinfo/sleepData.xlsx'
 data_excel = pd.ExcelFile(data_path)
@@ -88,6 +92,35 @@ for i in month_range:
 	info_df['bed_time'][i] = calc_avg_time(new_table,i,False)
 	info_df['sleep_duration'][i] = calc_sd(new_table,i)
 	info_df['mt_time'][i] = calc_mt(new_table,i)
-info_df.ix['all'] = [calc_avg_time(new_table),calc_avg_time(new_table,False),\
+info_df.ix['all'] = [calc_avg_time(new_table),calc_avg_time(new_table,wake=False),\
 	calc_sd(new_table),calc_mt(new_table)]
 print(info_df)
+
+# plot function starts here
+
+def dt2m(dt):
+    return (dt.hour*60) + dt.minute
+ 
+def m2hm(x, i):
+    h = int(x/60)
+    m = int(x%60)
+    return '%(h)02d:%(m)02d' % {'h':h,'m':m}
+
+
+fig, ax = plt.subplots()
+dates = new_table.index
+dates = dates.date
+wake_time_as_y = new_table['wake_time']
+wake_time_as_y = map(lambda x:dt2m(x), wake_time_as_y)
+ax.plot_date(dates, wake_time_as_y, color = 'red', label = 'wake_time')
+
+ax.set_ylim(180,900)
+ax.yaxis.set_major_locator(MultipleLocator(240))
+ax.yaxis.set_major_formatter(ff(m2hm))
+ax.yaxis.grid(color='black', linestyle=':', linewidth=0.5)
+
+plt.legend(loc='best')
+plt.xlabel('Date' )
+plt.ylabel('Hour (24hr)' )
+plt.title('wake time figure')
+plt.show()
