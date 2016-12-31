@@ -107,15 +107,23 @@ def m2hm(x, i):
     return '%(h)02d:%(m)02d' % {'h':h,'m':m}
 
 
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(12,6))
 dates = new_table.index
 dates = dates.date
+dates = dates.tolist()
 wake_time_as_y = new_table['wake_time']
 wake_time_as_y = map(lambda x:dt2m(x), wake_time_as_y)
 ax.plot_date(dates, wake_time_as_y, color = 'red', label = 'wake_time')
 
+ax.set_xlim([dates[0],dates[len(dates)-1]])
+ax.xaxis.set_major_locator(mdates.AutoDateLocator())
+ax.xaxis.set_minor_locator(mdates.DayLocator())
+fmt = mdates.DateFormatter('%Y/%m')
+ax.xaxis.set_major_formatter(fmt)
+ax.xaxis.grid(color='#ffcf06', linestyle=':', linewidth=0.5)
+
 ax.set_ylim(180,900)
-ax.yaxis.set_major_locator(MultipleLocator(240))
+ax.yaxis.set_major_locator(MultipleLocator(30))
 ax.yaxis.set_major_formatter(ff(m2hm))
 ax.yaxis.grid(color='black', linestyle=':', linewidth=0.5)
 
