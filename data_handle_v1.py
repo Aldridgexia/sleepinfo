@@ -148,8 +148,6 @@ print_avg_time(new_table, wake=False)
 for i in month_range:
 	print_avg_time(new_table, i, wake=False)
 
-info_df = DataFrame(columns=['wake_time','bed_time','sleep_duration','mt_time'], index=month_range)
-print(info_df)
 # 按月份显示统计信息汇总
 for i in month_range:
 	print('-'*33 + '\n')
